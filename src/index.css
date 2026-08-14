@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ink ladder (bluish, dark-mode-safe HSL triplets) */
+  --ink-em: 222 24% 16%;
+  --ink-strong: 218 17% 30%;
+  --ink: 218 12% 42%;
+  --ink-muted: 220 9% 54%;
+  --ink-soft: 220 11% 66%;
+  --ink-faint: 220 14% 80%;
+
+  /* hairlines & borders */
+  --border: 217 19% 87%;
+  --hairline: 210 30% 93%;
+  --hairline-soft: 210 30% 96%;
+
+  /* layout */
+  --header-height: 56px;
+  --content-top: 100px;
+}
+
+* {
+  border-color: hsl(var(--hairline));
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: hsl(var(--ink));
+  background-color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Familjen Grotesk', sans-serif;
+}
+
+::selection {
+  background: #c7d2fe;
+}
+
+/* ---------- Type scale ---------- */
+.type-display {
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: hsl(var(--ink-em));
+  line-height: 1.2;
+}
+.type-count {
+  font-size: 17px;
+  font-weight: 600;
+  color: #6366f1;
+}
+.type-heading {
+  font-family: 'Familjen Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: hsl(var(--ink-em));
+}
+.type-subheading {
+  font-size: 13px;
+  font-weight: 600;
+  color: hsl(var(--ink-em));
+}
+.type-label {
+  font-size: 11px;
+  color: hsl(var(--ink-muted));
+}
+.type-meta {
+  font-size: 11px;
+  color: hsl(var(--ink-muted));
+}
+.type-eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: hsl(var(--ink-soft));
+  font-weight: 500;
+}
+
+/* ---------- Ink ladder utility classes ---------- */
+.ink-em {
+  color: hsl(var(--ink-em));
+}
+.ink-strong {
+  color: hsl(var(--ink-strong));
+}
+.ink {
+  color: hsl(var(--ink));
+}
+.ink-muted {
+  color: hsl(var(--ink-muted));
+}
+.ink-soft {
+  color: hsl(var(--ink-soft));
+}
+.ink-faint {
+  color: hsl(var(--ink-faint));
+}
+
+/* ---------- Global data-grid table ---------- */
+.data-grid {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-grid thead th {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: hsl(var(--ink-soft));
+  padding: 0.5rem 1rem 0.5rem 0;
+  text-align: left;
+  border-bottom: 1px solid hsl(var(--hairline));
+  white-space: nowrap;
+}
+.data-grid tbody td {
+  font-size: 10px;
+  color: hsl(var(--ink-soft));
+  padding: 0.6875rem 1rem 0.6875rem 0;
+  vertical-align: middle;
+}
+.data-grid tbody tr {
+  border-bottom: 1px solid hsl(var(--hairline-soft));
+}
+.data-grid tbody tr:last-child {
+  border-bottom: none;
+}
+.data-grid tbody tr:hover {
+  background: color-mix(in srgb, #f8fafc 65%, transparent);
+}
+td.cell-name,
+td.cell-id {
+  color: hsl(var(--ink));
+  font-weight: 500;
+}
+td.cell-amount,
+td.cell-strong {
+  color: hsl(var(--ink-strong));
+  font-weight: 600;
+}
+td.cell-faint {
+  color: hsl(var(--ink-faint));
+}
+td.cell-num,
+th.cell-num {
+  text-align: right;
+}
+.cell-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ---------- Scrollbars (subtle) ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* sidebar independent scroll: no visible scrollbar for a cleaner look */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 0px;
+}
