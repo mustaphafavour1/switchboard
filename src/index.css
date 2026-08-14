@@ -140,10 +140,14 @@ h4 {
 .data-grid tbody tr:hover {
   background: color-mix(in srgb, #f8fafc 65%, transparent);
 }
-td.cell-name,
 td.cell-id {
   color: hsl(var(--ink));
   font-weight: 500;
+}
+td.cell-name {
+  color: #334155; /* gray-700 */
+  font-weight: 500;
+  font-size: 11px; /* 1px larger than the 10px base */
 }
 td.cell-amount,
 td.cell-strong {

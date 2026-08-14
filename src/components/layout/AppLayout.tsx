@@ -1,9 +1,13 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
+import { cn } from '../../lib/utils'
 
 export function AppLayout({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  const isMainDashboard = pathname === '/'
+
   return (
     <div className="min-h-screen bg-neutral-50">
       <header className="sticky top-0 z-40 flex h-14 border-b border-hairline bg-white">
@@ -26,7 +30,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <Sidebar />
         </aside>
         <main className="min-w-0 flex-1">
-          <div className="mx-auto max-w-content px-8 pb-16 pt-[100px] md:px-10">{children}</div>
+          <div
+            className={cn(
+              'mx-auto max-w-content px-8 pb-16 md:px-10',
+              isMainDashboard ? 'pt-[100px]' : 'pt-[50px]',
+            )}
+          >
+            {children}
+          </div>
         </main>
       </div>
     </div>
