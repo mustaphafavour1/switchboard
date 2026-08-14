@@ -10,18 +10,28 @@ export function MiniAreaChart({
   color = '#6366F1',
   height = 120,
   formatY,
+  showAxis = false,
 }: {
   data: Point[]
   color?: string
   height?: number
   formatY?: (v: number) => string
+  showAxis?: boolean
 }) {
   const gradientId = `mini-area-${color.replace('#', '')}`
+  const desiredTicks = showAxis ? 7 : 5
+  const step = Math.max(1, Math.ceil(data.length / desiredTicks))
+  const tickValues = data.filter((_, i) => i % step === 0).map((d) => d.x)
+  const formatTick = (v: string | number) => {
+    const d = new Date(String(v))
+    return Number.isNaN(d.getTime()) ? String(v) : `${d.getMonth() + 1}/${d.getDate()}`
+  }
+
   return (
     <div style={{ height }}>
       <ResponsiveLine
         data={[{ id: 'series', data }]}
-        margin={{ top: 8, right: 8, bottom: 20, left: 8 }}
+        margin={showAxis ? { top: 8, right: 16, bottom: 24, left: 44 } : { top: 8, right: 8, bottom: 20, left: 8 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 'auto', max: 'auto', nice: true }}
         curve="monotoneX"
@@ -30,12 +40,22 @@ export function MiniAreaChart({
         enablePoints={false}
         enableGridX={false}
         enableGridY={true}
-        gridYValues={3}
-        axisLeft={null}
+        gridYValues={4}
+        axisLeft={
+          showAxis
+            ? {
+                tickSize: 0,
+                tickPadding: 8,
+                tickValues: 4,
+                format: (v) => (formatY ? formatY(Number(v)) : String(v)),
+              }
+            : null
+        }
         axisBottom={{
           tickSize: 0,
           tickPadding: 8,
-          tickValues: 4,
+          tickValues,
+          format: formatTick,
         }}
         colors={[color]}
         lineWidth={1.75}

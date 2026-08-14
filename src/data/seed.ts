@@ -98,24 +98,12 @@ function buildCostSeries(rng: Rng, baseDaily: number): CostPoint[] {
 export function generateSeedData(seed: number): SeedData {
   const rng = mulberry32(seed)
 
-  const providers: Provider[] = PROVIDERS.map((p) => {
-    const status = weightedStatus(rng)
-    const modelIds = MODELS.filter((m) => m.providerId === p.id).map((m) => m.id)
-    return {
-      ...p,
-      status,
-      uptimePercent: status === 'operational' ? randRange(rng, 99.4, 99.99) : status === 'degraded' ? randRange(rng, 97.5, 99.3) : randRange(rng, 92, 97),
-      avgLatencyMs: Math.round(randRange(rng, 210, 1400)),
-      monthlySpend: Math.round(randRange(rng, 2200, 26000)),
-      modelIds,
-    }
-  })
+  const providerStatus = new Map(PROVIDERS.map((p) => [p.id, weightedStatus(rng)]))
 
   const models: Model[] = MODELS.map((m) => ({
     ...m,
-    status: providers.find((p) => p.id === m.providerId)?.status ?? 'operational',
+    status: providerStatus.get(m.providerId) ?? 'operational',
   }))
-
   const modelById = new Map(models.map((m) => [m.id, m]))
 
   const products: Product[] = PRODUCTS.map((p) => ({
@@ -131,7 +119,33 @@ export function generateSeedData(seed: number): SeedData {
       routeBy: p.routeBy,
       monthlyBudget: p.monthlyBudget,
     },
+    actualSpend: Math.round(p.monthlyBudget * randRange(rng, 0.55, 1.18)),
   }))
+
+  // Allocate each product's actual spend across its primary + fallback providers so
+  // spend-by-provider and the Sankey flow stay consistent with one another.
+  const providerSpend = new Map<string, number>()
+  for (const product of products) {
+    const chain = [product.routing.primaryProviderId, ...product.routing.fallbackChain.map((f) => f.providerId)]
+    const weights = chain.map((_, i) => (i === 0 ? 0.78 : 0.22 / Math.max(1, chain.length - 1)))
+    chain.forEach((providerId, i) => {
+      const prev = providerSpend.get(providerId) ?? 0
+      providerSpend.set(providerId, prev + product.actualSpend * weights[i])
+    })
+  }
+
+  const providers: Provider[] = PROVIDERS.map((p) => {
+    const status = providerStatus.get(p.id)!
+    const modelIds = MODELS.filter((m) => m.providerId === p.id).map((m) => m.id)
+    return {
+      ...p,
+      status,
+      uptimePercent: status === 'operational' ? randRange(rng, 99.4, 99.99) : status === 'degraded' ? randRange(rng, 97.5, 99.3) : randRange(rng, 92, 97),
+      avgLatencyMs: Math.round(randRange(rng, 210, 1400)),
+      monthlySpend: Math.round(providerSpend.get(p.id) ?? randRange(rng, 1500, 4000)),
+      modelIds,
+    }
+  })
 
   const people: Person[] = PEOPLE.map((p) => ({
     ...p,

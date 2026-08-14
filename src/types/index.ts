@@ -56,6 +56,7 @@ export interface Product {
   owner: string
   description: string
   routing: RoutingRule
+  actualSpend: number
 }
 
 export type UserRole = 'Product Admin' | 'Lead Developer' | 'Super Admin' | 'Product Developer'
