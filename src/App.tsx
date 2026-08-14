@@ -1,39 +1,43 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
 import { RoleProvider } from './context/RoleContext'
 import { SeedProvider } from './context/SeedContext'
-import Overview from './pages/Overview'
-import ProviderCatalog from './pages/ProviderCatalog'
-import Comparison from './pages/Comparison'
-import AddProvider from './pages/AddProvider'
-import ChangeFeed from './pages/ChangeFeed'
-import ProductsRouting from './pages/ProductsRouting'
-import ModelPresets from './pages/ModelPresets'
-import CostUsage from './pages/CostUsage'
-import UptimeAvailability from './pages/UptimeAvailability'
-import AccessAudit from './pages/AccessAudit'
-import IntegrationDocs from './pages/IntegrationDocs'
-import Settings from './pages/Settings'
+
+const Overview = lazy(() => import('./pages/Overview'))
+const ProviderCatalog = lazy(() => import('./pages/ProviderCatalog'))
+const Comparison = lazy(() => import('./pages/Comparison'))
+const AddProvider = lazy(() => import('./pages/AddProvider'))
+const ChangeFeed = lazy(() => import('./pages/ChangeFeed'))
+const ProductsRouting = lazy(() => import('./pages/ProductsRouting'))
+const ModelPresets = lazy(() => import('./pages/ModelPresets'))
+const CostUsage = lazy(() => import('./pages/CostUsage'))
+const UptimeAvailability = lazy(() => import('./pages/UptimeAvailability'))
+const AccessAudit = lazy(() => import('./pages/AccessAudit'))
+const IntegrationDocs = lazy(() => import('./pages/IntegrationDocs'))
+const Settings = lazy(() => import('./pages/Settings'))
 
 export default function App() {
   return (
     <RoleProvider>
       <SeedProvider>
         <AppLayout>
-          <Routes>
-            <Route path="/" element={<Overview />} />
-            <Route path="/providers/catalog" element={<ProviderCatalog />} />
-            <Route path="/providers/comparison" element={<Comparison />} />
-            <Route path="/providers/add" element={<AddProvider />} />
-            <Route path="/providers/change-feed" element={<ChangeFeed />} />
-            <Route path="/products/routing" element={<ProductsRouting />} />
-            <Route path="/products/presets" element={<ModelPresets />} />
-            <Route path="/insights/cost-usage" element={<CostUsage />} />
-            <Route path="/insights/uptime" element={<UptimeAvailability />} />
-            <Route path="/admin/access-audit" element={<AccessAudit />} />
-            <Route path="/admin/integration-docs" element={<IntegrationDocs />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<Overview />} />
+              <Route path="/providers/catalog" element={<ProviderCatalog />} />
+              <Route path="/providers/comparison" element={<Comparison />} />
+              <Route path="/providers/add" element={<AddProvider />} />
+              <Route path="/providers/change-feed" element={<ChangeFeed />} />
+              <Route path="/products/routing" element={<ProductsRouting />} />
+              <Route path="/products/presets" element={<ModelPresets />} />
+              <Route path="/insights/cost-usage" element={<CostUsage />} />
+              <Route path="/insights/uptime" element={<UptimeAvailability />} />
+              <Route path="/admin/access-audit" element={<AccessAudit />} />
+              <Route path="/admin/integration-docs" element={<IntegrationDocs />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </Suspense>
         </AppLayout>
       </SeedProvider>
     </RoleProvider>

@@ -176,7 +176,7 @@ export function generateSeedData(seed: number): SeedData {
     changeFeed,
     costSeries,
     kpi: {
-      activeProviders: providers.filter((p) => p.status !== 'outage').length,
+      activeProviders: providers.filter((p) => p.status === 'operational').length,
       monthlySpend,
       monthlySpendDelta: prev7Sum ? ((last7Sum - prev7Sum) / prev7Sum) * 100 : 0,
       avgLatencyMs,

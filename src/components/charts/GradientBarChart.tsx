@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 
 interface BarDatum {
@@ -17,7 +18,10 @@ export function GradientBarChart({
   height?: number
   valueFormat?: (v: number) => string
 }) {
+  const [hovered, setHovered] = useState<string | null>(null)
   const gradientId = `bar-gradient-${color.replace('#', '')}`
+  const hoverGradientId = `bar-gradient-hover-${color.replace('#', '')}`
+
   return (
     <div style={{ height }}>
       <ResponsiveBar
@@ -38,6 +42,8 @@ export function GradientBarChart({
         axisLeft={{ tickSize: 0, tickPadding: 8 }}
         axisBottom={{ tickSize: 0, tickPadding: 6, tickValues: 4 }}
         enableLabel={false}
+        onMouseEnter={(datum) => setHovered(String(datum.indexValue))}
+        onMouseLeave={() => setHovered(null)}
         theme={{
           grid: { line: { stroke: '#F1F5F9', strokeWidth: 1 } },
           axis: {
@@ -61,8 +67,19 @@ export function GradientBarChart({
               { offset: 100, color, opacity: 1 },
             ],
           },
+          {
+            id: hoverGradientId,
+            type: 'linearGradient',
+            colors: [
+              { offset: 0, color, opacity: 0.16 },
+              { offset: 100, color, opacity: 0.45 },
+            ],
+          },
         ]}
-        fill={[{ match: '*', id: gradientId }]}
+        fill={[
+          { match: (bar) => String(bar.data.indexValue) === hovered, id: hoverGradientId },
+          { match: '*', id: gradientId },
+        ]}
         tooltip={({ indexValue, value }) => (
           <div className="rounded-lg border border-hairline-soft bg-white px-2.5 py-1.5 text-[11px] shadow-soft">
             <div className="text-ink-faint">{String(indexValue)}</div>

@@ -87,7 +87,7 @@ export default function ProviderCatalog() {
       />
 
       {suggestion && (
-        <AiNote className="mb-4">
+        <AiNote label="Provider Suggestion" className="mb-4">
           <span className="font-medium">{suggestion.headline}.</span> {suggestion.detail}
         </AiNote>
       )}

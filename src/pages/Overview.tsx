@@ -76,7 +76,7 @@ export default function Overview() {
       </div>
 
       {suggestion && (
-        <AiNote className="mt-3.5">
+        <AiNote label="Provider Suggestion" className="mt-3.5">
           <span className="font-medium">{suggestion.headline}.</span> {suggestion.detail}
         </AiNote>
       )}

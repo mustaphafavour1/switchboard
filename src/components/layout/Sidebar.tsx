@@ -25,7 +25,7 @@ export function Sidebar() {
                   end={item.path === '/'}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] transition-colors',
+                      'flex items-start gap-2.5 rounded-lg px-3 py-2.5 text-[13px] leading-[1.25] transition-colors',
                       isActive
                         ? 'bg-primary-50 font-semibold text-primary-700'
                         : 'text-ink-strong hover:bg-neutral-50',
@@ -34,9 +34,9 @@ export function Sidebar() {
                 >
                   {({ isActive }) => (
                     <>
-                      <item.icon size={16} className={isActive ? 'text-primary-600' : 'text-ink-soft'} />
-                      <span className="truncate">{item.label}</span>
-                      {!item.built && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-neutral-200" />}
+                      <item.icon size={16} className={cn('mt-[1px] shrink-0', isActive ? 'text-primary-600' : 'text-ink-soft')} />
+                      <span className="min-w-0 flex-1">{item.label}</span>
+                      {!item.built && <span className="mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-200" />}
                     </>
                   )}
                 </NavLink>
