@@ -33,7 +33,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div
             className={cn(
               'mx-auto max-w-content px-8 pb-16 md:px-10',
-              isMainDashboard ? 'pt-[100px]' : 'pt-[50px]',
+              isMainDashboard ? 'pt-6' : 'pt-[50px]',
             )}
           >
             {children}
