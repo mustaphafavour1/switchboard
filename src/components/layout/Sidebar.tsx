@@ -28,7 +28,7 @@ export function Sidebar() {
                       'flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[11.5px] transition-colors',
                       isActive
                         ? 'bg-primary-50 font-semibold text-primary-700'
-                        : 'text-neutral-300 hover:bg-neutral-50',
+                        : 'text-neutral-400 hover:bg-neutral-50',
                     )
                   }
                 >
