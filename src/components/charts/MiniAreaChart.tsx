@@ -24,14 +24,16 @@ export function MiniAreaChart({
   const tickValues = data.filter((_, i) => i % step === 0).map((d) => d.x)
   const formatTick = (v: string | number) => {
     const d = new Date(String(v))
-    return Number.isNaN(d.getTime()) ? String(v) : `${d.getMonth() + 1}/${d.getDate()}`
+    if (Number.isNaN(d.getTime())) return String(v)
+    const month = d.toLocaleString('en-US', { month: 'short' })
+    return `${month}. ${d.getDate()}`
   }
 
   return (
     <div style={{ height }}>
       <ResponsiveLine
         data={[{ id: 'series', data }]}
-        margin={showAxis ? { top: 8, right: 16, bottom: 24, left: 44 } : { top: 8, right: 8, bottom: 20, left: 8 }}
+        margin={showAxis ? { top: 8, right: 16, bottom: 24, left: 44 } : { top: 8, right: 20, bottom: 20, left: 20 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 'auto', max: 'auto', nice: true }}
         curve="monotoneX"
