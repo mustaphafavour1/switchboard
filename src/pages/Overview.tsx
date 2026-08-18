@@ -81,7 +81,7 @@ export default function Overview() {
         </AiNote>
       )}
 
-      <div className="mt-5 grid grid-cols-2 gap-3.5">
+      <div className="mt-5 grid grid-cols-2 items-start gap-3.5">
         <Card>
           <div className="mb-1 flex items-center justify-between">
             <span className="type-subheading">Spend trend</span>

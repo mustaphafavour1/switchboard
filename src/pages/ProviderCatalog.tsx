@@ -6,6 +6,7 @@ import { StatusBadge } from '../components/ui/Badge'
 import { SearchInput, CompactSelect } from '../components/ui/Input'
 import { Card } from '../components/ui/Card'
 import { AiNote } from '../components/ai/AiNote'
+import { DataGrid, type DataGridColumn } from '../components/ui/DataGrid'
 import { useSeed } from '../context/SeedContext'
 import { providerSuggestion } from '../lib/ai'
 import { formatNumber } from '../lib/utils'
@@ -79,6 +80,72 @@ export default function ProviderCatalog() {
 
   const suggestion = providerSuggestion(data)
 
+  const columns: DataGridColumn<Row>[] = [
+    {
+      key: 'provider',
+      label: 'Provider',
+      render: (r) => (
+        <div className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-50 font-mono text-[8px] font-semibold text-primary-700">
+            {r.initials}
+          </span>
+          <span className="cell-name">{r.providerName}</span>
+        </div>
+      ),
+    },
+    {
+      key: 'model',
+      label: 'Model',
+      cellClassName: 'cell-id cell-mono',
+      render: (r) => r.modelName,
+    },
+    {
+      key: 'capabilities',
+      label: 'Capabilities',
+      render: (r) => (
+        <div className="flex flex-wrap gap-1">
+          {r.capabilities.slice(0, 3).map((c) => (
+            <span
+              key={c}
+              className="rounded-full border border-hairline bg-neutral-50 px-1.5 py-[1px] text-[9px] text-ink-muted"
+            >
+              {CAPABILITY_LABEL[c]}
+            </span>
+          ))}
+          {r.capabilities.length > 3 && (
+            <span className="text-[9px] text-ink-faint">+{r.capabilities.length - 3}</span>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: 'context',
+      label: 'Context',
+      align: 'right',
+      cellClassName: 'cell-mono',
+      render: (r) => formatNumber(r.contextWindow, { compact: true }),
+    },
+    {
+      key: 'price',
+      label: 'Price in / out (1M)',
+      align: 'right',
+      cellClassName: 'cell-mono cell-amount',
+      render: (r) => `$${r.priceIn.toFixed(2)} / $${r.priceOut.toFixed(2)}`,
+    },
+    {
+      key: 'rateLimit',
+      label: 'Rate limit',
+      align: 'right',
+      cellClassName: 'cell-mono',
+      render: (r) => `${formatNumber(r.rateLimitRpm, { compact: true })} rpm`,
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      render: (r) => <StatusBadge status={r.status} />,
+    },
+  ]
+
   return (
     <div>
       <PageHeader
@@ -134,57 +201,7 @@ export default function ProviderCatalog() {
         </div>
 
         <div className="overflow-x-auto px-5">
-          <table className="data-grid">
-            <thead>
-              <tr>
-                <th>Provider</th>
-                <th>Model</th>
-                <th>Capabilities</th>
-                <th className="cell-num">Context</th>
-                <th className="cell-num">Price in / out (1M)</th>
-                <th className="cell-num">Rate limit</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pageItems.map((r) => (
-                <tr key={r.key}>
-                  <td>
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-50 font-mono text-[8px] font-semibold text-primary-700">
-                        {r.initials}
-                      </span>
-                      <span className="cell-name">{r.providerName}</span>
-                    </div>
-                  </td>
-                  <td className="cell-id cell-mono">{r.modelName}</td>
-                  <td>
-                    <div className="flex flex-wrap gap-1">
-                      {r.capabilities.slice(0, 3).map((c) => (
-                        <span
-                          key={c}
-                          className="rounded-full border border-hairline bg-neutral-50 px-1.5 py-[1px] text-[9px] text-ink-muted"
-                        >
-                          {CAPABILITY_LABEL[c]}
-                        </span>
-                      ))}
-                      {r.capabilities.length > 3 && (
-                        <span className="text-[9px] text-ink-faint">+{r.capabilities.length - 3}</span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="cell-num cell-mono">{formatNumber(r.contextWindow, { compact: true })}</td>
-                  <td className="cell-num cell-mono cell-amount">
-                    ${r.priceIn.toFixed(2)} / ${r.priceOut.toFixed(2)}
-                  </td>
-                  <td className="cell-num cell-mono">{formatNumber(r.rateLimitRpm, { compact: true })} rpm</td>
-                  <td>
-                    <StatusBadge status={r.status} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <DataGrid columns={columns} rows={pageItems} rowKey={(r) => r.key} />
         </div>
 
         <div className="p-5 pt-3">

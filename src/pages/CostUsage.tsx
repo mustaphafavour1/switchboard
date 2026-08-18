@@ -85,7 +85,7 @@ export default function CostUsage() {
         <span className="font-medium">{anomaly.headline}.</span> {anomaly.detail}
       </AiNote>
 
-      <div className="mt-5 grid grid-cols-2 gap-3.5">
+      <div className="mt-5 grid grid-cols-2 items-start gap-3.5">
         <Card>
           <span className="type-subheading">Spend trend</span>
           <div className="mt-2">
@@ -112,7 +112,7 @@ export default function CostUsage() {
         </Card>
       </div>
 
-      <div className="mt-3.5 grid grid-cols-2 gap-3.5">
+      <div className="mt-3.5 grid grid-cols-2 items-start gap-3.5">
         <Card>
           <div className="mb-3 flex items-center justify-between">
             <span className="type-subheading">Spend breakdown</span>
